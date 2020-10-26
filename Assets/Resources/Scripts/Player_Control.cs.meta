@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d7b65a2b24833464180b91c5a8f22126
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - PlayerT1: {instanceID: 0}
+  - PlayerT2: {instanceID: 0}
+  - UpgradeDetection: {instanceID: 0}
+  - UpgradeDetect: {instanceID: 0}
+  - JoystickInput: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

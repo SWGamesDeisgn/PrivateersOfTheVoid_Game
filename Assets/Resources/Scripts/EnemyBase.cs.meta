@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f546e7bed2c5d8d4fabdd7a1495ff871
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - RotationAnchor: {fileID: 7130925085408323560, guid: 3b2517d0e84b0284184801b74e8d1a46,
+      type: 3}
+  - UpgradeMaster: {instanceID: 0}
+  - spawner: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
