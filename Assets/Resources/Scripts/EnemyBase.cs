@@ -240,7 +240,7 @@ public class EnemyBase : MonoBehaviour
                 missle = AssetPool.GetFromPool("Missles");
                 if (null != missle)
                 {
-                    missle.transform.position = (MissleLoc.position + new Vector3(0.0f, 0, 0.5f));
+                    missle.transform.position = (MissleLoc.position + new Vector3(0.0f, 0, -0.5f));
                     missle.transform.rotation = transform.rotation;
                     missle.SetActive(true);
                     missle.GetComponent<Rigidbody>().velocity = missle.transform.forward * MissleSpeed;
