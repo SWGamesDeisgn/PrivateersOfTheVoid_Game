@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - BorderLeft
+  - BorderRight
+  - BorderBottom
+  - BorderTop
+  - Enemies
+  - OutOfBounds
+  - TripleShotUpgrade
+  - UpgradeDetector
+  - UpgradeBrain
+  - UIObject
+  - UIText
+  - PlayerMissleSpawner
+  - ProjectileDestroyer
+  - PlayerBeamLaser
+  - PlayerWeaponSpawner
+  - UpgradeBeamLaser
+  - JoystickBaseObj
+  - PlayerLifeUpgrade
+  - EnemyMissles
+  - PlayerMissles
+  - Undefined
+  - Missles
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - ParticleBlocker
+  - Borders
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
