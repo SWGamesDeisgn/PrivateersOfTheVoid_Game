@@ -18,7 +18,6 @@ public class Pooling : MonoBehaviour
     private GameObject ObjectPool;
     private bool bPreCachingFinished = false;
     private UI_Main UIObj;
-    private bool bPrecachingFinished = false;
     // Start is called before the first frame update
     void Awake()
     {
@@ -41,8 +40,8 @@ public class Pooling : MonoBehaviour
                 L_SpawnedObjects.Add(obj);
             }
         }
-        bPrecachingFinished = true;
-        StartCoroutine(PreCaching());
+        bPreCachingFinished = true;
+        Debug.Log("Pre Caching Completed");
     }
     public List<GameObject> GetList()
     {
@@ -60,23 +59,7 @@ public class Pooling : MonoBehaviour
            // Time.timeScale = 0;
         }
     }
-    private IEnumerator PreCaching()
-    {
-        foreach (GameObject obj in L_SpawnedObjects)
-        {
-            obj.SetActive(true);
-            obj.transform.Translate(0.0f, 0.0f, 0.0f);
-            yield return new WaitForSecondsRealtime(0.1f);
-            obj.SetActive(false);
-        }
-        if (null != UIObj)
-        {
-            UIObj.GamePause = false;
-        }
-        bPreCachingFinished = true;
-        Debug.Log("Pre Caching Completed");
-        yield return null;
-    }
+
     public GameObject GetFromPool(string tag)
     {
         for (int i = 0; i < L_SpawnedObjects.Count; i++)
@@ -105,6 +88,6 @@ public class Pooling : MonoBehaviour
     }
     public bool PreCachingFinished()
     {
-        return bPrecachingFinished;
+        return bPreCachingFinished;
     }
 }

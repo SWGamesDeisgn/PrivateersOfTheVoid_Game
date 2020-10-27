@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7543200420487315393}
   - component: {fileID: 2839661849988944346}
   - component: {fileID: 6109005409183725155}
+  - component: {fileID: 3868595240284791500}
   m_Layer: 0
   m_Name: Missle 1
   m_TagString: Missles
@@ -113,6 +114,21 @@ MonoBehaviour:
   targetHit: {fileID: 0}
   DamageTicker: 0
   Damage: 0
+  strOwningObject: 
+  bUseCollision: 1
+--- !u!65 &3868595240284791500
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4004138356294379499}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.05, y: 0.05, z: 0.23}
+  m_Center: {x: 0, y: 0, z: 0.11}
 --- !u!1 &7085645318251742833
 GameObject:
   m_ObjectHideFlags: 0

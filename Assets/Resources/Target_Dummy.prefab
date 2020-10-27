@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 4006712396577876}
   - component: {fileID: 54221881420415728}
   - component: {fileID: 65919553452671476}
-  - component: {fileID: 114175512114692366}
+  - component: {fileID: 2107795151677540156}
   m_Layer: 0
   m_Name: Target_Dummy
   m_TagString: Enemies
@@ -165,7 +165,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.1, y: 0.3, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114175512114692366
+--- !u!114 &2107795151677540156
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,14 +174,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1471175957133150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30982ab9d3c8fa34297a6e05cc7fbf97, type: 3}
+  m_Script: {fileID: 11500000, guid: 6105ee9364929f348a0518cb43fd9c67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Spawned1: {fileID: 1900147582891014, guid: 2ba07a05f2f27eb478a07c0214ea324d, type: 3}
-  Spawned: {fileID: 1198424822785216, guid: 78a2042486a491b46a8a849e6691e441, type: 3}
+  UpgradeMaster: {fileID: 0}
+  EnemyMoveSpeed: 1
   EnemyHealth: 400
-  enemyMoveSpeed: 1
-  MultiHasSpawned: 0
-  UpgradeDetect: {fileID: 0}
-  ScoreSet: {fileID: 0}
-  pathTimer: 0
+  spawner: {fileID: 0}
+  MovementEnabled: 0
+  PathSelection: 0
+  PathDelay: 0
+  enemySpeedModifier: 0
+  AssetPool: {fileID: 0}
+  MissleSpeed: 6
+  Missle: {fileID: 0}
+  MissleLoc: {fileID: 0}
