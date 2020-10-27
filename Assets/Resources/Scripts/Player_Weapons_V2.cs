@@ -95,7 +95,7 @@ void FixedUpdate()
         switch (null != AmmoPool)
         {
             case true:
-                missle = AmmoPool.GetFromPool("Missles");
+                missle = AmmoPool.GetFromPool("PlayerMissile");
                 if (null != missle)
                 {
                     missle.transform.position = (MissleLoc.position + new Vector3(-0.075f, 0, 0.5f));
@@ -105,7 +105,7 @@ void FixedUpdate()
                     missle.GetComponent<RaycastEmitter>().SetOwner("Player");
                 }
 
-                missle1 = AmmoPool.GetFromPool("Missles");
+                missle1 = AmmoPool.GetFromPool("PlayerMissile");
                 if (null != missle1)
                 {
                     missle1.transform.position = (MissleLoc.position + new Vector3(0.075f, 0, 0.5f));
@@ -137,7 +137,7 @@ void FixedUpdate()
         switch (null != AmmoPool)
         {
             case true:
-                missle = AmmoPool.GetFromPool("Missles");
+                missle = AmmoPool.GetFromPool("PlayerMissile");
                 if (null != missle)
                 {
                     missle.transform.position = (MissleLoc.position + new Vector3(0.15f, 0, 0.5f));
@@ -147,7 +147,7 @@ void FixedUpdate()
                     missle.GetComponent<RaycastEmitter>().SetOwner("Player");
                 }
 
-                missle1 = AmmoPool.GetFromPool("Missles");
+                missle1 = AmmoPool.GetFromPool("PlayerMissile");
                 if (null != missle1)
                 {
                     missle1.transform.position = (MissleLoc.position + new Vector3(-0.15f, 0, 0.5f));
@@ -179,7 +179,7 @@ void FixedUpdate()
         switch (null != AmmoPool)
         {
             case true:
-                missle = AmmoPool.GetFromPool("Missles");
+                missle = AmmoPool.GetFromPool("PlayerMissile");
                 if (null != missle)
                 {
                     missle.transform.position = (MissleLoc.position + new Vector3(-0.25f, 0, 0.5f));
@@ -189,7 +189,7 @@ void FixedUpdate()
                     missle.GetComponent<RaycastEmitter>().SetOwner("Player");
                 }
 
-                missle1 = AmmoPool.GetFromPool("Missles");
+                missle1 = AmmoPool.GetFromPool("PlayerMissile");
                 if (null != missle1)
                 {
                     missle1.transform.position = (MissleLoc.position + new Vector3(0.25f, 0, 0.5f));

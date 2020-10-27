@@ -468,7 +468,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -59.600006, y: 26.600037}
+  m_AnchoredPosition: {x: -59.600037, y: 26.599976}
   m_SizeDelta: {x: 100, y: 14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &48054768
@@ -5528,6 +5528,10 @@ MonoBehaviour:
     GO_ObjectToPool: {fileID: 1900147582891014, guid: 2ba07a05f2f27eb478a07c0214ea324d,
       type: 3}
     b_Expand: 0
+  - i_SpawnedAmount: 10
+    GO_ObjectToPool: {fileID: 2260588707150703565, guid: 326d615a022bd6f449792fb4d38d21ee,
+      type: 3}
+    b_Expand: 1
   L_SpawnedObjects: []
 --- !u!4 &1580191923
 Transform:
@@ -7865,7 +7869,7 @@ PrefabInstance:
     - target: {fileID: 4941253832562001362, guid: fada4ecde6272674598eb1c0415848b1,
         type: 3}
       propertyPath: m_Name
-      value: f
+      value: Player V2
       objectReference: {fileID: 0}
     - target: {fileID: 4941253832562001363, guid: fada4ecde6272674598eb1c0415848b1,
         type: 3}

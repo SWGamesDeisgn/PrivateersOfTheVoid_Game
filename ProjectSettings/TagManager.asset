@@ -25,6 +25,8 @@ TagManager:
   - EnemyMissles
   - PlayerMissles
   - Undefined
+  - EnemyMissile
+  - PlayerMissile
   - Missles
   layers:
   - Default

@@ -22,7 +22,7 @@ public class RaycastEmitter : MonoBehaviour {
             plasmaDPS = 0.5f;
             Damage = 2;
         }
-        if (gameObject.CompareTag("Missles"))
+        if (gameObject.tag.Contains("Missile"))
         {
             Damage = 1;
             BeamLength = 0.25f;
