@@ -13,17 +13,24 @@ public class UI_Main: MonoBehaviour {
     public Canvas UICanvas;
     private InputField resWidth;
     private InputField resHeight;
-    public Dropdown CustomResolutions;
+    private GameObject ResolutionsObject;
+    private Dropdown CustomResolutions;
     public GameObject UIPauseMenu;
     public GameObject GameInfo;
     private Resolution[] resolutions;
+    public bool bHideResolutions;
 
     private void Awake()
     {
         resolutions = Screen.resolutions;
-        setResolutions();
-        CustomResolutions = GameObject.Find("UIResolutionsDropdown").GetComponent<Dropdown>();
+        SetResolutions();
+        ResolutionsObject = GameObject.Find("UIResolutionsDropdown");
+        CustomResolutions = GameObject.Find("UIResolutionsDropdown").GetComponent<Dropdown>();     
         UIPauseMenu = GameObject.Find("UIPauseMenu");
+        if (bHideResolutions)
+        {
+            ResolutionsObject.SetActive(false);
+        }
     }
  
     // Use this for initialization
@@ -35,7 +42,8 @@ public class UI_Main: MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update() 
+{
         ScoreCounter();
         // pauses the game using timescale when escape is pressed, and unpauses when escape is pressed again.
         if (Input.GetKeyDown(KeyCode.Escape)) { if (GamePause != true) { GamePause = true; Pause(); } else if (GamePause == true) { GamePause = false; Resume(); } }
@@ -50,16 +58,18 @@ public class UI_Main: MonoBehaviour {
     public void Quit() { Application.Quit(); }
     public void Resume() { UIPauseMenu.SetActive(false); Time.timeScale = 1; GamePause = false; }
     public void Pause() { UIPauseMenu.SetActive(true); Time.timeScale = 0; GamePause = true; }
-    void setResolutions()
-    {
-       
+    void SetResolutions()
+    {       
         if ((resolutions[0].width == 1366) && (resolutions[0].height == 768)) { Debug.Log("Resolution is " + resolutions[0].width + " by " + resolutions[0].height); Screen.SetResolution(388, 690, false); }
         if ((resolutions[0].width == 1920) && (resolutions[0].height == 1080)) { Debug.Log("Resolution is " + resolutions[0].width + " by " + resolutions[0].height); Screen.SetResolution(560, 1000, false); }
     }
-    public void customResolution()
+    public void CustomResolution()
     {
-        if (CustomResolutions.value == 1) { Debug.Log("1920 by 1080"); Screen.SetResolution(560, 1000, false); }
-        if (CustomResolutions.value == 2) { Debug.Log("1366 by 768"); Screen.SetResolution(388, 690, false); }
+        if (ResolutionsObject.activeInHierarchy)
+        {
+            if (CustomResolutions.value == 1) { Debug.Log("1920 by 1080"); Screen.SetResolution(560, 1000, false); }
+            if (CustomResolutions.value == 2) { Debug.Log("1366 by 768"); Screen.SetResolution(388, 690, false); }
+        }        
     }
     public void GameInfoMethod() { GameInfo.SetActive(true); UIPauseMenu.SetActive(false); }
     public void GameInfoBackButtonMethod() { GameInfo.SetActive(false); UIPauseMenu.SetActive(true); }

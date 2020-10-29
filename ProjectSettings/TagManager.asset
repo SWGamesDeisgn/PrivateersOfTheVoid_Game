@@ -4,10 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - BorderLeft
-  - BorderRight
-  - BorderBottom
-  - BorderTop
   - Enemies
   - OutOfBounds
   - TripleShotUpgrade
@@ -17,17 +13,12 @@ TagManager:
   - UIText
   - PlayerMissleSpawner
   - ProjectileDestroyer
-  - PlayerBeamLaser
   - PlayerWeaponSpawner
   - UpgradeBeamLaser
   - JoystickBaseObj
   - PlayerLifeUpgrade
-  - EnemyMissles
-  - PlayerMissles
-  - Undefined
   - EnemyMissile
   - PlayerMissile
-  - Missles
   layers:
   - Default
   - TransparentFX

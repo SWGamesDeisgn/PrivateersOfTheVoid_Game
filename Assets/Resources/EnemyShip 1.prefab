@@ -188,8 +188,8 @@ MonoBehaviour:
   enemySpeedModifier: 0
   AssetPool: {fileID: 0}
   MissleSpeed: 6
-  Missle: {fileID: 0}
-  MissleLoc: {fileID: 0}
+  Missle: {fileID: 2260588707150703565, guid: 326d615a022bd6f449792fb4d38d21ee, type: 3}
+  MissleLoc: {fileID: 4006712396577876}
 --- !u!1 &7696272539987911073
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +201,7 @@ GameObject:
   - component: {fileID: 7345046740697888980}
   - component: {fileID: 7790863086841497468}
   - component: {fileID: 4549218588615549099}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FieldOfVision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

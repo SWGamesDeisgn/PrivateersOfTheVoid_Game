@@ -231,6 +231,16 @@ public class Player_Control : MonoBehaviour
     // also detects when the player picks an upgrade up.
     void OnTriggerEnter(Collider collision)
     {
+        /*
+        if (collision.gameObject.CompareTag("BorderLeft")) { Borderleft = 2; }
+        if (collision.gameObject.CompareTag("BorderRight")) { Borderright = 2; }
+        if (collision.gameObject.CompareTag("BorderTop")) { Bordertop = 2; }
+        if (collision.gameObject.CompareTag("BorderBottom")) { Borderbottom = 2; }
+        */
+        if (collision.gameObject.name == "BorderLeft") { Borderleft = 2; }
+        if (collision.gameObject.name == "BorderRight") { Borderright = 2; }
+        if (collision.gameObject.name == "BorderTop") { Bordertop = 2; }
+        if (collision.gameObject.name == "BorderBottom") { Borderbottom = 2; }
         // if the player isn't immune to damage, PlayerDamageImmune is true, start the PlayerDamaged coroutine, print player has been hit.
         // Then reduce player's current health by 1.
         if (PlayerDamageImmune == false)
@@ -248,10 +258,6 @@ public class Player_Control : MonoBehaviour
                 UpgradePlayerLife = true; StartCoroutine(PlayerLifeGenerator());
             }
         }
-        if (collision.gameObject.CompareTag("BorderLeft")) { Borderleft = 2; }
-        if (collision.gameObject.CompareTag("BorderRight")) { Borderright = 2; }
-        if (collision.gameObject.CompareTag("BorderTop")) { Bordertop = 2; }
-        if (collision.gameObject.CompareTag("BorderBottom")) { Borderbottom = 2; }
         // Missles upgrade
         if ((collision.gameObject.tag == "TripleShotUpgrade") && (MaxMultiShot > 0)) { StartCoroutine(UpgradeDelay()); }
         // Beamlaser upgrade
@@ -261,10 +267,16 @@ public class Player_Control : MonoBehaviour
     // has the player moved away from the colliding object?
     void OnTriggerExit(Collider collision)
     {
+        /*
         if (collision.gameObject.CompareTag("BorderLeft")) { Borderleft = 0; }
         if (collision.gameObject.CompareTag("BorderRight")) { Borderright = 0; }
         if (collision.gameObject.CompareTag("BorderTop")) { Bordertop = 0; }
         if (collision.gameObject.CompareTag("BorderBottom")) { Borderbottom = 0; }
+        */
+        if (collision.gameObject.name == "BorderLeft") { Borderleft = 0; }
+        if (collision.gameObject.name == "BorderRight") { Borderright = 0; }
+        if (collision.gameObject.name == "BorderTop") { Bordertop = 0; }
+        if (collision.gameObject.name == "BorderBottom") { Borderbottom = 0; }
     }
 
     private void ObjectInit()

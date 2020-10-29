@@ -17,7 +17,7 @@ public class RaycastEmitter : MonoBehaviour {
 	void Start ()
     {
         // sets the variables based on the tags of the objects this script is assigned to.
-        if (gameObject.CompareTag("PlayerBeamLaser"))
+        if (gameObject.name.Contains("PlayerBeamLaser"))
         {
             plasmaDPS = 0.5f;
             Damage = 2;
@@ -34,7 +34,7 @@ public class RaycastEmitter : MonoBehaviour {
 		if (Paused == false)
 		{
             // if gameobject's tag is PlayerBeamLaser create a new raycast and draw a line for it.
-			if (gameObject.CompareTag( "PlayerBeamLaser"))
+			if (gameObject.name.Contains("PlayerBeamLaser"))
 				{
                 Ray Ray = new Ray(transform.position + new Vector3(0, 0, 0.35f), Vector3.forward * BeamLength);
                 Debug.DrawRay (transform.position + new Vector3(0,0,0.35f), Vector3.forward * BeamLength);
@@ -55,7 +55,7 @@ public class RaycastEmitter : MonoBehaviour {
 						targetHit = null;
 					}
 				}
-            if (gameObject.CompareTag("Missles"))
+            if (gameObject.tag.Contains("Missile"))
             {
                 if (false == bUseCollision)
                 {
@@ -104,9 +104,9 @@ public class RaycastEmitter : MonoBehaviour {
                     }
                 }
             }
-            // if the raycast doesn't hit anytihng tagged with "Enemies"  the targethit is null.
             else
             {
+                // if the raycast doesn't hit anytihng tagged with "Enemies"  the targethit is null.
                 targetHit = null;
             }
         }

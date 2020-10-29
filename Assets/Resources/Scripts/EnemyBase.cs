@@ -16,25 +16,32 @@ public class EnemyBase : MonoBehaviour
     protected UI_Main ScoreSet;
     [HideInInspector] public EnemySpawning spawner;
     private bool upgradeDropped;
-    [HideInInspector]public bool MovementEnabled;
-    [HideInInspector]public int PathSelection = 0;
-    [HideInInspector]public float PathDelay = 0.0f;
-    [HideInInspector]public float enemySpeedModifier = 0.0f;
+    [HideInInspector] public bool MovementEnabled;
+    public int PathSelection = 0;
+    [HideInInspector] public float PathDelay = 0.0f;
+    [HideInInspector] public float enemySpeedModifier = 0.0f;
     private float speedModifier = 0.0f;
     public Pooling AssetPool;
-    private int MultiShotRarity;
     private BoxCollider boxColFoV;
     private GameObject objPlayer;
     private bool bPauseTimer = false;
-    private bool bAttacking = false;
     private bool bAttackFinished = false;
     private string strTargetName = "";
     public int MissleSpeed = 6;
     public GameObject Missle;
-    public Transform MissleLoc;
-    private GameObject missle;
+    private GameObject missile;
     private Quaternion quatLookRotation;
     bool bLookingAtTarget = false;
+    private GameObject objWeaponSpawnLocation;
+    private float fOriginAngle = 0.0f;
+    public float fRotationStep = 160.0f;
+    private float fDelayTimer = 0.0f;
+    public int iNumberOfAttacks = 0;
+    public float fAttackSpeed = 0.0f;
+    private float fAttackTimer = 0.0f;
+    public bool bEvacInitiated = false;
+
+    // This is basically the start function for the base class.
     public void FindTheComponents()
     {
         UpgradeMaster = Resources.Load<GameObject>("Upgrades/UpgradesMaster") as GameObject;
@@ -44,6 +51,8 @@ public class EnemyBase : MonoBehaviour
         UpgradeDetect = GameObject.Find("UpgradeBrain(Clone)").GetComponent<Upgrades>();
         AssetPool = GameObject.Find("GameMaster").GetComponent<Pooling>();
         boxColFoV = transform.GetChild(1).gameObject.GetComponent<BoxCollider>();
+        objWeaponSpawnLocation = transform.GetChild(2).gameObject;
+        fOriginAngle = transform.eulerAngles.y;
     }
     public void Timer()
     {
@@ -52,22 +61,27 @@ public class EnemyBase : MonoBehaviour
             pathTimer += Mathf.RoundToInt(Time.fixedDeltaTime * 100.0f) / 100.0f;
         }
     }
+    //Paths serve as update functionality.
     public void PathA()
     {
         transform.Translate(Vector3.forward * (EnemyMoveSpeed * Time.fixedDeltaTime));
-        if (pathTimer >= (8.0f / EnemyMoveSpeed))
+        if (pathTimer >= (PathDelay / EnemyMoveSpeed))
         {
+            bEvacInitiated = true;
             if (gameObject.transform.position.x < 0)
             {
-                gameObject.transform.rotation = Quaternion.AngleAxis(225.0f, Vector3.up);
+                gameObject.transform.rotation = Quaternion.AngleAxis(225.0f, Vector3.up);               
                 Destroy(gameObject, 4f);
             }
             if (gameObject.transform.position.x > 0)
             {
-                gameObject.transform.rotation = Quaternion.AngleAxis(135.0f, Vector3.up);
+                gameObject.transform.rotation = Quaternion.AngleAxis(135.0f, Vector3.up);                
                 Destroy(gameObject, 4f);
             }
-            if (gameObject.transform.position.z <= -6.5f) { Destroy(gameObject); }
+            if (gameObject.transform.position.z <= -6.5f)
+            {
+                Destroy(gameObject);                
+            }
         }
     }
     public void PathB()
@@ -92,21 +106,28 @@ public class EnemyBase : MonoBehaviour
             if ((gameObject.transform.position.x >= 7.0f) || ((gameObject.transform.position.z <= -6.5f)) || ((gameObject.transform.position.x <= -7.0f))) { Destroy(gameObject); }
         }
     }
-    
+
     public void AttackPathA()
     {
-        if (gameObject.transform.position.z <= 0.0f)
+        if (gameObject.transform.position.z <= 1.0f && false == bEvacInitiated)
         {
             if ((null != objPlayer) && (false == bAttackFinished))
             {
-                if (false == bAttackFinished)
-                {
-                    StartCoroutine(AttackTimer());
-                    bPauseTimer = true;
-                }
+                StartCoroutine(AttackTimer());
+                bPauseTimer = true;
             }
         }
-       if (false == bPauseTimer)
+        if (true == bAttackFinished && true == bPauseTimer)
+        {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.AngleAxis(180.0f, Vector3.up), fRotationStep * Time.fixedDeltaTime);
+            if (transform.eulerAngles.y == fOriginAngle)
+            {
+                bAttackFinished = true;
+                bPauseTimer = false;
+                bLookingAtTarget = false;
+            }
+        }
+        if (false == bPauseTimer)
         {
             PathA();
         }
@@ -115,25 +136,31 @@ public class EnemyBase : MonoBehaviour
     {
         // https://answers.unity.com/questions/254130/how-do-i-rotate-an-object-towards-a-vector3-point.html
         quatLookRotation = Quaternion.LookRotation((objPlayer.transform.position - transform.position).normalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, quatLookRotation, Time.deltaTime * 4);
-        yield return new WaitForSeconds(1.0f);
+        transform.rotation = Quaternion.Slerp(transform.rotation, quatLookRotation, fRotationStep * Time.deltaTime);
+        yield return new WaitForSeconds(0.5f);
         bLookingAtTarget = true;
-        if (true == bPauseTimer && bLookingAtTarget == true)
+        if (bLookingAtTarget == true)
         {
-            if (false == bAttackFinished)
+            if (iNumberOfAttacks > 0)
             {
-                Fire();
-                print(transform.name + " has launched an attack on " + strTargetName + "!");
-                bAttackFinished = true;
+                if (fAttackTimer <= 1.0f)
+                {
+                    fAttackTimer += Time.deltaTime * fAttackSpeed;
+                }
+                if (fAttackTimer >= 1.0f)
+                {
+                    Fire();
+                    print(transform.name + " has launched an attack on " + strTargetName + "!");
+                    fAttackTimer -= fAttackTimer;
+                }
             }
-            bLookingAtTarget = false;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.AngleAxis(180.0f, Vector3.up), Time.deltaTime * 4);
-            yield return new WaitForSeconds(1.0f);
-            bPauseTimer = false;                           
-            StopCoroutine(AttackTimer());
-            yield return null;
-        }        
-        yield return null;
+            else
+            {
+                yield return new WaitForSeconds(0.5f);               
+                bAttackFinished = true;
+                StopCoroutine(AttackTimer());
+            }
+        }
     }
     public void LootDrop()
     {
@@ -148,7 +175,7 @@ public class EnemyBase : MonoBehaviour
                 Debug.Log(upgradeDropper);
                 if (!upgradeDropped)
                 {
-                    if ((upgradeDropper <=20 && upgradeDropper > 10) && (UpgradeDetect.BeamLaserDropped == 0) && (UpgradeDetect.beamLaserCounter == 0))
+                    if ((upgradeDropper <= 20 && upgradeDropper > 10) && (UpgradeDetect.BeamLaserDropped == 0) && (UpgradeDetect.beamLaserCounter == 0))
                     {
                         UpgradeDetect.BeamLaserDropped += 1;
                         upgradeDropped = true;
@@ -226,25 +253,28 @@ public class EnemyBase : MonoBehaviour
     }
     void OnTriggerExit(Collider boxColFoV)
     {
+        /*
         if (boxColFoV.gameObject.CompareTag("Player"))
         {
             objPlayer = null;
             //print(boxColFoV.gameObject.name + " no longer detected");
         }
+        */
     }
     void Fire()
     {
         switch (null != AssetPool)
         {
             case true:
-                missle = AssetPool.GetFromPool("EnemyMissile");
-                if (null != missle)
+                missile = AssetPool.GetFromPool("EnemyMissile");
+                if (null != missile && null != objWeaponSpawnLocation)
                 {
-                    missle.transform.position = (MissleLoc.position + new Vector3(0.0f, 0, -0.5f));
-                    missle.transform.rotation = transform.rotation;
-                    missle.SetActive(true);
-                    missle.GetComponent<Rigidbody>().velocity = missle.transform.forward * MissleSpeed;
-                    missle.GetComponent<RaycastEmitter>().SetOwner("Enemy");
+                    missile.transform.rotation = transform.rotation;
+                    missile.transform.position = objWeaponSpawnLocation.transform.position;
+                    missile.SetActive(true);
+                    missile.GetComponent<Rigidbody>().velocity = missile.transform.forward * MissleSpeed;
+                    missile.GetComponent<RaycastEmitter>().SetOwner("Enemy");
+                    iNumberOfAttacks--;
                 }
                 break;
             case false:

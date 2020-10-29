@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player_Weapons_V2 : MonoBehaviour {
 
     public bool Pause;
+    public bool FireTheGuns = false;
+    public bool FireBeamLaser = false;
     public float MissleFiringSpeed = 1.75f;
 	public int MissleDamage = 1;
 	public GameObject Missle;
@@ -17,12 +19,12 @@ public class Player_Weapons_V2 : MonoBehaviour {
 	public GameObject WeaponSystems;
 	public GameObject BeamLaserObj;
     private bool MissleLock = false;
-    public bool FireTheGuns = false;
     // waitTime is the upper limter for the timer var.
     private float timer;
     private float waitTime = 0.02f;
     private UI_Main gamePause;
     public Pooling AmmoPool;
+
 
     void Start ()
 	{
@@ -71,7 +73,7 @@ void FixedUpdate()
                     // then it will activate the BeamLaserObject which instantly fires the particle emitter along with the two raycasts for the weapon type.
 
                 }
-                if (WeaponsUnlocked.BeamLaser == true)
+                if (WeaponsUnlocked.BeamLaser == true || FireBeamLaser == true)
                 {
                     MissleLock = true;
                     BeamLaserObj.SetActive(true);

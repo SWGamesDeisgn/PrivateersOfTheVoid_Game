@@ -14,8 +14,8 @@ public class EnemySpawning : SpawnPositions
     private Player_Control player;
     private int startDelay;
     private int nextWave = 0;
-    public int SetWave;
     public bool bForceEndlessWave = false;
+    public int SetWave;
     public float GameTime;
     // waitTime is the upper limter for the timer var.
     private float waitTime = 0.02f;
@@ -177,9 +177,25 @@ public class EnemySpawning : SpawnPositions
     {
         // this method will set the modifiers of the spawnee's movement speed based on the spawn formation they belong to,
         // as well as being able to alter the delay time before they start their rotations.
-        if ((spawnSwapper == SpawnFormation3) && (i == 0)) { spawnee.GetComponent<EnemyControl>().PathDelay = 6f; spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 0.935f; }
-        if ((spawnSwapper == SpawnFormation3) && (i == 1)) { spawnee.GetComponent<EnemyControl>().PathDelay = 6f; spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 1.20f; }
-        if ((spawnSwapper == SpawnFormation5) && (i == 0)) { spawnee.GetComponent<EnemyControl>().PathDelay = 6f; spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 0.935f; }
+        if ((spawnSwapper == SpawnFormation3) && (i == 0))
+        {
+            spawnee.GetComponent<EnemyControl>().PathDelay = 6.0f;
+            spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 0.935f;
+        }
+        if ((spawnSwapper == SpawnFormation3) && (i == 1))
+        {
+            spawnee.GetComponent<EnemyControl>().PathDelay = 6.0f;
+            spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 1.20f;
+        }
+        if (spawnSwapper == SpawnFormation5)
+        {
+            spawnee.GetComponent<EnemyControl>().PathDelay = 7.0f;
+            spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 1.0f;
+        }
+        if (spawnSwapper == SpawnFormation1 || spawnSwapper == SpawnFormation2)
+        {
+            spawnee.GetComponent<EnemyControl>().PathDelay = 8.0f;
+        }
     }
     void Update()
     {
@@ -194,7 +210,7 @@ public class EnemySpawning : SpawnPositions
             if ((player.PlayerLives > 0) && (bPrecachingComplete) && (EnemyParent.transform.childCount == 0))
             {
                 SpawnTimer +=  spawnSpeed * Time.deltaTime;
-                if (nextWave > 3) { nextWave = 0; }
+                if (nextWave > 3) { nextWave = Mathf.RoundToInt(Random.Range(0, 3)); }
                 if (SpawnTimer > spawnDelay)
                 {                  
                     SpawnTimer = SpawnTimer - spawnDelay;
