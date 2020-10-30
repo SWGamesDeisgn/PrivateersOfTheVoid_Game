@@ -912,11 +912,11 @@ GameObject:
   - component: {fileID: 145304815}
   - component: {fileID: 145304814}
   m_Layer: 0
-  m_Name: New Sprite (1)
+  m_Name: Sprite_Astroid_Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!212 &145304814
 SpriteRenderer:
@@ -6478,11 +6478,11 @@ GameObject:
   - component: {fileID: 1750832470}
   - component: {fileID: 1750832469}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: Sprite_Astroid_Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!212 &1750832469
 SpriteRenderer:
