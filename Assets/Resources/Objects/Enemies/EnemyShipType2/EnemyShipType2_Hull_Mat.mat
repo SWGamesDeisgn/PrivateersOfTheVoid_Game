@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EnemyShipType2_Thrusterl_Mat
+  m_Name: EnemyShipType2_Hull_Mat
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP _PARALLAXMAP
   m_LightmapFlags: 1
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 5c69e851507c9c9439f0a2ceed76e6b7, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7429cf8d759184f4f996147c2af1387a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -36,23 +36,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: c368daa5d2a211645bc86437a88ed7a0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 38a6f98be7a4d154e8b8a0e0f57e0e12, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 38ee94daf4881e14da5a5b011a948cae, type: 3}
+        m_Texture: {fileID: 2800000, guid: 56cefd0a5be3a604fa693c7409ec8594, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: b1607e5d6f2d12e4ca2fa86ee83a019a, type: 3}
+        m_Texture: {fileID: 2800000, guid: b60f2942539aade4a8795cdb9ceecc13, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: ea903039e3c0cde4f855984d2fb7820e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 05afb36c56199164f885b712d763180c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: ea10490adcc0769409aef4b442ac90ae, type: 3}
+        m_Texture: {fileID: 2800000, guid: f17ab0b98248d91498611d51e3771c64, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -74,4 +74,4 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 2, g: 2, b: 2, a: 1}

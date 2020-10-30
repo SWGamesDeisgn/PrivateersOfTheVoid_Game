@@ -7980,6 +7980,11 @@ PrefabInstance:
       propertyPath: FireBeamLaser
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1141796973877031961, guid: fada4ecde6272674598eb1c0415848b1,
+        type: 3}
+      propertyPath: MissleFiringSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5065301158224186846, guid: fada4ecde6272674598eb1c0415848b1,
         type: 3}
       propertyPath: m_TagString
@@ -8311,7 +8316,7 @@ PrefabInstance:
     - target: {fileID: 5791682573396658535, guid: b912e85483bb2b747a8028eabe94ec1d,
         type: 3}
       propertyPath: EnemyTypes.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5791682573396658535, guid: b912e85483bb2b747a8028eabe94ec1d,
         type: 3}
@@ -8418,7 +8423,7 @@ PrefabInstance:
         type: 3}
       propertyPath: EnemyTypes.Array.data[0]
       value: 
-      objectReference: {fileID: 1471175957133150, guid: 9556e18e5a371e34d8e95e796a3b135d,
+      objectReference: {fileID: 3330620178230743849, guid: 6f7eb7dfc7eee634ebed768f6a23c578,
         type: 3}
     - target: {fileID: 5791682573396658535, guid: b912e85483bb2b747a8028eabe94ec1d,
         type: 3}
@@ -8430,7 +8435,7 @@ PrefabInstance:
         type: 3}
       propertyPath: EnemyTypes.Array.data[2]
       value: 
-      objectReference: {fileID: 3330620178230743849, guid: 6f7eb7dfc7eee634ebed768f6a23c578,
+      objectReference: {fileID: 622723988996088844, guid: d44eee026b9e2f44295ab48d45688700,
         type: 3}
     - target: {fileID: 5791682573396658535, guid: b912e85483bb2b747a8028eabe94ec1d,
         type: 3}
@@ -8721,8 +8726,7 @@ PrefabInstance:
         type: 3}
       propertyPath: EnemyTypes.Array.data[3]
       value: 
-      objectReference: {fileID: 622723988996088844, guid: d44eee026b9e2f44295ab48d45688700,
-        type: 3}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b912e85483bb2b747a8028eabe94ec1d, type: 3}
 --- !u!1001 &6133203913768850973

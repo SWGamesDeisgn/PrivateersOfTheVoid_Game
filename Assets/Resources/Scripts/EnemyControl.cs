@@ -7,8 +7,7 @@ public class EnemyControl : EnemyBase
     // Start is called before the first frame update
     void Start()
     {
-        FindTheComponents();
-        if (gameObject.name.Contains("Fighter ")) { EnemyMoveSpeed = 4f; EnemyHealth = 4; } if (gameObject.name.Contains("Corsair ")) { EnemyMoveSpeed = 4f; EnemyHealth = 16; }
+        FindTheComponents();        
     }
 
     // Update is called once per frame

@@ -22,7 +22,6 @@ public class EnemySpawning : SpawnPositions
     private float SpawnTimer;
     public float spawnSpeed;
     public float spawnDelay = 2.0f;
-    public int enemyType;
     private float spawnOffsetX;
     private float spawnOffsetZ;
     public int EnemiesSpawnedCount;
@@ -37,6 +36,7 @@ public class EnemySpawning : SpawnPositions
     private GameObject EnemyParent;
     private Vector3 SpawneePosition;
     public int c = 0;
+    private int iTotalWaves = 0;
     void Awake()
     {
         //sets spawn delay to allow for loading
@@ -46,10 +46,10 @@ public class EnemySpawning : SpawnPositions
     }
     // set the initial enemy spawn type based on the value of int enemytype.
     // sets the instantiated objects name according to the enemytype that is spawned, and sets int i back to 0 when the co-routine is started.
-    private void EnemySelection()
+    private void EnemySelection(int iValue)
     {
         // Set the name of the spawned object in relation to the public enemytype variable, allowing for more variations to be addedand switched in at any point.
-        switch (enemyType)
+        switch (iValue)
         {
             case 0:
                 Spawned = EnemyTypes[0]; enemyName = "EnemyFighter ";
@@ -58,11 +58,10 @@ public class EnemySpawning : SpawnPositions
                 Spawned = EnemyTypes[1]; enemyName = "EnemyCorsair ";
                 break;
             case 2:
-                Spawned = EnemyTypes[2]; enemyName = "EnemyAttackFighter ";
-                break;
-            case 3:
+                Spawned = EnemyTypes[2]; enemyName = "EnemySpaceMine ";
                 break;
             default:
+                Spawned = EnemyTypes[0]; enemyName = "EnemyFighter ";
                 break;
         }
     }
@@ -71,7 +70,6 @@ public class EnemySpawning : SpawnPositions
     {
         gamePause = GameObject.Find("UI").GetComponent<UI_Main>();
         SpawnFormations();
-        EnemySelection();
         // grab the player control script from the player in the world and assign it to the local player variable.
         player = GameObject.FindWithTag("Player").GetComponent<Player_Control>();
         EnemyParent = GameObject.Find("EnemiesParent");
@@ -119,18 +117,22 @@ public class EnemySpawning : SpawnPositions
         {
             case 0:
                 spawnSwapper = SpawnFormation1;
+                EnemySelection(0);
                 pathChoice = 0;
                 break;
             case 1:
                 spawnSwapper = SpawnFormation2;
+                EnemySelection(0);
                 pathChoice = 0;
                 break;
             case 2:
                 spawnSwapper = SpawnFormation5;
+                EnemySelection(1);
                 pathChoice = 3;
                 break;
             case 3:
                 spawnSwapper = SpawnFormation3;
+                EnemySelection(0);
                 pathChoice = 2;
                 waveSpawns = 8;
                 break;
@@ -169,6 +171,8 @@ public class EnemySpawning : SpawnPositions
             if (false == bForceEndlessWave)
             {
                 nextWave++;
+                iTotalWaves++;
+                if (iTotalWaves >= 4) { nextWave = Mathf.RoundToInt(Random.Range(0, 4)); }
             }
             StopCoroutine(Spawning());
         }
@@ -209,8 +213,7 @@ public class EnemySpawning : SpawnPositions
         {
             if ((player.PlayerLives > 0) && (bPrecachingComplete) && (EnemyParent.transform.childCount == 0))
             {
-                SpawnTimer +=  spawnSpeed * Time.deltaTime;
-                if (nextWave > 3) { nextWave = Mathf.RoundToInt(Random.Range(0, 3)); }
+                SpawnTimer +=  spawnSpeed * Time.deltaTime;                              
                 if (SpawnTimer > spawnDelay)
                 {                  
                     SpawnTimer = SpawnTimer - spawnDelay;

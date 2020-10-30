@@ -24,6 +24,7 @@ public class Player_Weapons_V2 : MonoBehaviour {
     private float waitTime = 0.02f;
     private UI_Main gamePause;
     public Pooling AmmoPool;
+    private bool bReadyToFire = true;
 
 
     void Start ()
@@ -49,16 +50,16 @@ void FixedUpdate()
             {
                 if (WeaponsUnlocked.Bordertop < 2)
                 {
-                    timer += MissleFiringSpeed * Time.deltaTime;
+                    if (timer <= 1.0f)
+                    {
+                        timer += MissleFiringSpeed * Time.deltaTime;
+                    }          
                     //I am a clock.
                     // when timer is greater than nextShot run the code which then checks if the player has specific upgrades unlocked.
                     //timer += Time.fixedDeltaTime * MissleFiringSpeed;
-                    if (((Input.GetKey(KeyCode.Space) || (FireTheGuns == true)) && (timer > nextShot)) && (MissleLock == false))
+                    if (((Input.GetKey(KeyCode.Space) || (FireTheGuns == true)) && (timer >= 1.0f)) && (MissleLock == false))
                     {
-                        nextShot = timer + (MissleFiringSpeed / (MissleFiringSpeed * MissleFiringSpeed));
-                        timer = timer - waitTime;
-                        // nextShot = timer + (MissleFiringSpeed / (MissleFiringSpeed * MissleFiringSpeed));
-                        // timer = timer - waitTime;
+                        timer -= timer;
                         Fire();
                         if (WeaponsUnlocked.multishot < (WeaponsUnlocked.MaxMultiShot))
                         {
