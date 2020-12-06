@@ -1,23 +1,39 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class SpawnLocationOffsets
+public class EnemySpawnSettings
 {
-    public List<Vector3> SpawnFormationOffsets;
-    public List<int> iSpawnConfiguration;
+    public GameObject SpawnerLocator;
+    public GameObject ObjEnemy;
+    public int AmountToSpawn;
+    public int EnemyPathChoice;
+    private int EnemiesSpawned = 0;
+    public void IncrementSpawnCounter() { if( AmountToSpawn  > 0 ) { ++EnemiesSpawned; } }
+    public int GetSpawnCounterValue() { return EnemiesSpawned; }
+    public void ResetSpawnCounter() { EnemiesSpawned-= EnemiesSpawned; }
 }
 
+[System.Serializable]
+public class WaveConfig
+{
+    [Tooltip("Give the wave a name it make it easier to talk about.")]
+    public string WaveName;
+    [Tooltip("How fast the spawners will cycle, i.e. value of 10 will result in spawns being very close together, like a snake.")]
+    public float SpawningSpeed;
+    [Tooltip("Alternate Spawning between all spawners in the wave if false each spawner will spawn once per cycle.")] public bool AlternateSpawners;
+    public List<EnemySpawnSettings> SpawnSettings;
+}
+
+// Everything below this is now obsolete :D I achieved my goal of making wave configurations via editor view only! Woo!!!
 public class SpawnPositions : MonoBehaviour
 {
-    public List<GameObject> SpawnLocations;
-    public List<SpawnLocationOffsets> L_SpawnOffsets;
-    public List<Vector3> SpawnFormation1;
-    public List<Vector3> SpawnFormation2;
-    public List<Vector3> SpawnFormation3;
-    public List<Vector3> SpawnFormation4;
-    public List<Vector3> SpawnFormation5;
+    public List<WaveConfig> WaveConfigurations;
+    [HideInInspector] public List<Vector3> SpawnFormation1;
+    [HideInInspector] public List<Vector3> SpawnFormation2;
+    [HideInInspector] public List<Vector3> SpawnFormation3;
+    [HideInInspector] public List<Vector3> SpawnFormation4;
+    [HideInInspector] public List<Vector3> SpawnFormation5;
     private Vector3 StartingVector = new Vector3(2.25f, 0.0f, 0.0f);
     private Vector3 AdjustmentVector;
     // TODO:: Make these spawn locations configurable in editor rather than in code maybe?

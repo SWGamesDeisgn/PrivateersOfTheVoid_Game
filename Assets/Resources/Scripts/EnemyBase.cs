@@ -40,6 +40,10 @@ public class EnemyBase : MonoBehaviour
     public float fAttackSpeed = 0.0f;
     private float fAttackTimer = 0.0f;
     public bool bEvacInitiated = false;
+    private Player_Control multiShotCount;
+    private int upgradeDropper = 0;
+    private float StartingVectorX = 0.0f;
+    private float StartingVectorZ = 0.0f;
 
     // This is basically the start function for the base class.
     public void FindTheComponents()
@@ -53,6 +57,9 @@ public class EnemyBase : MonoBehaviour
         boxColFoV = transform.GetChild(1).gameObject.GetComponent<BoxCollider>();
         objWeaponSpawnLocation = transform.GetChild(2).gameObject;
         fOriginAngle = transform.eulerAngles.y;
+        multiShotCount = spawner.GetPlayerRef();
+        StartingVectorX = gameObject.transform.position.x;
+        StartingVectorZ = gameObject.transform.position.z;
     }
     public void Timer()
     {
@@ -86,7 +93,14 @@ public class EnemyBase : MonoBehaviour
     }
     public void PathB()
     {
-        gameObject.transform.rotation = Quaternion.AngleAxis(45.0f, Vector3.up);
+        if( StartingVectorX > 0 )
+        {
+            gameObject.transform.rotation = Quaternion.AngleAxis(225.0f, Vector3.up);
+        }
+        else
+        {
+            gameObject.transform.rotation = Quaternion.AngleAxis(135.0f, Vector3.up);
+        }       
         transform.Translate(Vector3.forward * (EnemyMoveSpeed * Time.fixedDeltaTime));
         Destroy(gameObject, 8f);
     }
@@ -109,7 +123,7 @@ public class EnemyBase : MonoBehaviour
 
     public void AttackPathA()
     {
-        if (gameObject.transform.position.z <= 1.0f && false == bEvacInitiated)
+        if (gameObject.transform.position.z <= 3.0f && false == bEvacInitiated)
         {
             if ((null != objPlayer) && (false == bAttackFinished))
             {
@@ -166,8 +180,7 @@ public class EnemyBase : MonoBehaviour
     {
         if (AssetPool)
         {
-            var multiShotCount = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Control>();
-            int upgradeDropper = (Random.Range(0, 200));
+            upgradeDropper = (Random.Range(0, 200));
 
             //when an upgrade is spawned the information is sent to an offsite brain to relay the information to the other member of the group.
             if (upgradeDropper < 30)

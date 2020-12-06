@@ -74,18 +74,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de97aee44980ada4e8afb345ee1c5c2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  WaveConfigurations: []
   SpawnFormation1: []
   SpawnFormation2: []
   SpawnFormation3: []
-  Pause: 0
-  Endless_Mode: 1
+  SpawnFormation4: []
+  SpawnFormation5: []
   UpgradeTracking: {fileID: 1674573053780872, guid: 9dc5ff11f87790e49b94e16d2b775434,
     type: 3}
-  EnemyType1: {fileID: 1471175957133150, guid: 9556e18e5a371e34d8e95e796a3b135d, type: 3}
-  EnemyType2: {fileID: 1471175957133150, guid: 09e866a63d1ab8847ac449220ce1e9cb, type: 3}
-  GameTime: 0
-  spawnSpeed: 0.25
+  ForceEndlessWave: 0
+  SetWave: 0
+  InitialSpawnSpeed: 0
   spawnDelay: 2
-  enemyType: 0
   EnemiesSpawnedCount: 0
   EnableEnemyMovement: 0

@@ -4,67 +4,40 @@ using UnityEngine;
 
 public class EnemySpawning : SpawnPositions
 {
-    public bool PauseSpawning;
-    public bool Endless_Mode;
+    [Tooltip("UpgradeBrain prefab goes here.")]
     public GameObject UpgradeTracking;
     private GameObject UpgradeTracker;
     private GameObject spawnee;
     private GameObject Spawned;
-    public List<GameObject> EnemyTypes;
     private Player_Control player;
-    private int startDelay;
-    private int nextWave = 0;
-    public bool bForceEndlessWave = false;
+    [Tooltip("Entirely for testing purposes, saves having to iterate through every wave to test specific variations.")]
+    public bool ForceEndlessWave = false;
     public int SetWave;
-    public float GameTime;
+    private float GameTime;
     // waitTime is the upper limter for the timer var.
-    private float waitTime = 0.02f;
     private float SpawnTimer;
-    public float spawnSpeed;
+    public float InitialSpawnSpeed;
     public float spawnDelay = 2.0f;
-    private float spawnOffsetX;
-    private float spawnOffsetZ;
     public int EnemiesSpawnedCount;
-    [HideInInspector]public bool EnableEnemyMovement;
+    [HideInInspector] public bool EnableEnemyMovement;
     private Vector3 SpawnPoint;
-    private string enemyName;
-    private List<Vector3> spawnSwapper;
-    private int pathChoice;
-    private int i = 0;
     private UI_Main gamePause;
     private bool bPrecachingComplete;
     private GameObject EnemyParent;
     private Vector3 SpawneePosition;
-    public int c = 0;
-    private int iTotalWaves = 0;
+
+    private int SpawnerSelected = 0;
+    private int WaveCount = 0;
+    private int TotalSpawned = 0;
+    private int SpawnsPerWave = 0;
+    private bool bPauseSpawnClock = false;
+    private bool bWaveComplete = false;
     void Awake()
     {
-        //sets spawn delay to allow for loading
-        startDelay = 5;
         // spawn the upgrade tracker prefab object into the scene at specified location.
-        UpgradeTracker = (GameObject)Instantiate(UpgradeTracking, new Vector3(0, 0.15f, 0), Quaternion.identity); UpgradeTracker.AddComponent<Upgrades>();
+        UpgradeTracker = ( GameObject )Instantiate(UpgradeTracking, new Vector3(0, 0.15f, 0), Quaternion.identity); UpgradeTracker.AddComponent<Upgrades>();
     }
-    // set the initial enemy spawn type based on the value of int enemytype.
-    // sets the instantiated objects name according to the enemytype that is spawned, and sets int i back to 0 when the co-routine is started.
-    private void EnemySelection(int iValue)
-    {
-        // Set the name of the spawned object in relation to the public enemytype variable, allowing for more variations to be addedand switched in at any point.
-        switch (iValue)
-        {
-            case 0:
-                Spawned = EnemyTypes[0]; enemyName = "EnemyFighter ";
-                break;
-            case 1:
-                Spawned = EnemyTypes[1]; enemyName = "EnemyCorsair ";
-                break;
-            case 2:
-                Spawned = EnemyTypes[2]; enemyName = "EnemySpaceMine ";
-                break;
-            default:
-                Spawned = EnemyTypes[0]; enemyName = "EnemyFighter ";
-                break;
-        }
-    }
+
     // initialization for the class
     public void Start()
     {
@@ -73,155 +46,179 @@ public class EnemySpawning : SpawnPositions
         // grab the player control script from the player in the world and assign it to the local player variable.
         player = GameObject.FindWithTag("Player").GetComponent<Player_Control>();
         EnemyParent = GameObject.Find("EnemiesParent");
-        if (SetWave > 0)
+        if( SetWave > 0 )
         {
-            nextWave = SetWave;
+            WaveCount = SetWave;
         }
-        // Testing new spawn mechanics here
-        // c represents the index of the spawn foramtion array, which is iterated only when a successful spawn occurs, otherwise incorrect spawns will happen.
-        // define the index of the spawn formation to use with nextWave, this can be a random value from min to max array length,
-        // TODO:: Ensure an array out of bounds can never happen -.- Don't forget this before you implement randomised wave spawning.
-        // SpawnLocations index is managed by available spawn positions i.e 0 to 5, then we iterate through the array of locations until we hit a valid spawn configuration.
-        // spawn configuration is defined by another array of 0 and 1 where 1 is a defined spawn and 0 denoted an empty place.
-        // Doing this results in us being able to skip to the next iteration attempt without incrementing on the spawned entity index, allowing us to create many different formations.
-        // All of this was theorised and prototyped to allow a designer to interact with the spawn mechanic variables and define / alter spawn configurations without having open a code editor.
-        // Naming of variables might need redefining later to make the logic easier to follow.
-        /*
-        for (int i = 0; i < L_SpawnOffsets[nextWave].iSpawnConfiguration.Count; ++i)
-        {
-            if (L_SpawnOffsets[nextWave].iSpawnConfiguration[i] != 0)
-            {
-                SpawneePosition = GetVectorFromList(SpawnLocations[i], L_SpawnOffsets[nextWave].SpawnFormationOffsets[c]);
-                spawnee = (GameObject)Instantiate(Spawned, SpawneePosition, Spawned.transform.rotation);
-                SpawnVariables();
-                spawnee.GetComponent<EnemyControl>().PathSelection = pathChoice;
-                ++EnemiesSpawnedCount;
-                spawnee.name = enemyName + EnemiesSpawnedCount;
-                spawnee.transform.parent = EnemyParent.transform;
-                EnableEnemyMovement = true;
-                c++;
-            }
-        }
-        */
-    }
-    private IEnumerator Spawning()
-    {
-        if (SetWave > 0)
-        {
-            nextWave = SetWave;
-        }   
-        int a;
-        int waveSpawns = 1;
-        // if the nextwave is 0 then spawnswapper list is set to the spawnformation1 list.
-        switch (nextWave)
-        {
-            case 0:
-                spawnSwapper = SpawnFormation1;
-                EnemySelection(0);
-                pathChoice = 0;
-                break;
-            case 1:
-                spawnSwapper = SpawnFormation2;
-                EnemySelection(0);
-                pathChoice = 0;
-                break;
-            case 2:
-                spawnSwapper = SpawnFormation5;
-                EnemySelection(1);
-                pathChoice = 3;
-                break;
-            case 3:
-                spawnSwapper = SpawnFormation3;
-                EnemySelection(0);
-                pathChoice = 2;
-                waveSpawns = 8;
-                break;
-            default:
-                break;
-        }
-        for (a = 0; a < waveSpawns; ++a)
-        {
-            for (i = 0; i < (spawnSwapper.Count); ++i)
-            {
-                SpawnPoint = spawnSwapper[i];
-                spawnee = (GameObject)Instantiate(Spawned, SpawnPoint, Spawned.transform.rotation);
-                SpawnVariables();
-                spawnee.GetComponent<EnemyControl>().PathSelection = pathChoice;
-                ++EnemiesSpawnedCount;
-                spawnee.name = enemyName + EnemiesSpawnedCount;
-                spawnee.transform.parent = EnemyParent.transform;
-                yield return null;
-            }
-            if (i == spawnSwapper.Count)
-            {
-                i = 0; yield return new WaitForSeconds(0.1f);
-                EnableEnemyMovement = true;
-                yield return new WaitForSeconds(0.1f);
-                EnableEnemyMovement = false;
-            }
-            yield return null;
-        }
-        // if i equals the total length of the swapped list then wait for 0.2seconds and enable the instantiated enemy's movement before waiting for 0.1 seconds to switch it off and then stop the co-routine.
-        if (a == (waveSpawns))
-        {
-            yield return new WaitForSeconds(0.2f);
-            EnableEnemyMovement = true;
-            yield return new WaitForSeconds(0.1f);
-            EnableEnemyMovement = false;
-            if (false == bForceEndlessWave)
-            {
-                nextWave++;
-                iTotalWaves++;
-                if (iTotalWaves >= 4) { nextWave = Mathf.RoundToInt(Random.Range(0, 4)); }
-            }
-            StopCoroutine(Spawning());
-        }
+        GetTotalSpawnsFromWave();
     }
     void SpawnVariables()
     {
         // this method will set the modifiers of the spawnee's movement speed based on the spawn formation they belong to,
         // as well as being able to alter the delay time before they start their rotations.
-        if ((spawnSwapper == SpawnFormation3) && (i == 0))
+        switch( WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].EnemyPathChoice )
         {
-            spawnee.GetComponent<EnemyControl>().PathDelay = 6.0f;
-            spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 0.935f;
-        }
-        if ((spawnSwapper == SpawnFormation3) && (i == 1))
-        {
-            spawnee.GetComponent<EnemyControl>().PathDelay = 6.0f;
-            spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 1.20f;
-        }
-        if (spawnSwapper == SpawnFormation5)
-        {
-            spawnee.GetComponent<EnemyControl>().PathDelay = 7.0f;
-            spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 1.0f;
-        }
-        if (spawnSwapper == SpawnFormation1 || spawnSwapper == SpawnFormation2)
-        {
-            spawnee.GetComponent<EnemyControl>().PathDelay = 8.0f;
+            case 0:
+                spawnee.GetComponent<EnemyControl>().PathDelay = 8.0f;
+                break;
+            case 1:
+                spawnee.GetComponent<EnemyControl>().PathDelay = 8.0f;
+                break;
+            case 2:
+                if( SpawnerSelected % 2 == 0 )
+                {
+                    spawnee.GetComponent<EnemyControl>().PathDelay = 6.0f;
+                    spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 0.935f;
+                }
+                else
+                {
+                    spawnee.GetComponent<EnemyControl>().PathDelay = 6.0f;
+                    spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 1.20f;
+                }
+                break;
+            case 3:
+                spawnee.GetComponent<EnemyControl>().PathDelay = 7.0f;
+                spawnee.GetComponent<EnemyControl>().enemySpeedModifier = 1.0f;
+                break;
+
         }
     }
     void Update()
     {
-        if (false == bPrecachingComplete)
+        if( false == bPrecachingComplete )
         {
             bPrecachingComplete = GameObject.Find("GameMaster").GetComponent<Pooling>().PreCachingFinished();
         }
-        // if pause is false then check if player has more than 0 lives then set the spawntimer then check if the timer is greater than delay, 
-        // if true then reset spawn timer and if nextwave is 0 start the spawning co-routine.
-        if (gamePause.GamePause == false && false == PauseSpawning)
+        // displays the amount of time since the game was launched.
+        GameTime = Mathf.RoundToInt(Time.time);
+        if( gamePause.GamePause == false )
         {
-            if ((player.PlayerLives > 0) && (bPrecachingComplete) && (EnemyParent.transform.childCount == 0))
+            if( ( player.PlayerLives > 0 ) && ( bPrecachingComplete ) )
             {
-                SpawnTimer +=  spawnSpeed * Time.deltaTime;                              
-                if (SpawnTimer > spawnDelay)
-                {                  
-                    SpawnTimer = SpawnTimer - spawnDelay;
-                    StartCoroutine(Spawning());
+                // Until we hit the upper count of WaveConfig run the loop.
+                if( WaveCount < WaveConfigurations.Count )
+                {
+                    if( false == bWaveComplete )
+                    {
+                        SpawnTimer += Time.deltaTime * WaveConfigurations[WaveCount].SpawningSpeed;
+                    }
+                    else
+                    {
+                        SpawnTimer += Time.deltaTime * InitialSpawnSpeed;
+                    }
+                    if( SpawnTimer > spawnDelay )
+                    {
+                        bWaveComplete = false;
+                        SpawnTimer -= SpawnTimer;
+                        StartCoroutine(SpawnWave());
+                    }
                 }
             }
         }
-        // displays the amount of time since the game was launched.
-        GameTime = Mathf.RoundToInt(Time.time);
+    }
+
+    private IEnumerator SpawnWave()
+    {
+        if( 0 == TotalSpawned )
+        {
+            GetTotalSpawnsFromWave();
+        }
+        // If the wave is designated to be an alternating sequence then the below code will execute, otherwise the else statement will trigger.
+        // resulting in every spawner being activated before enemies are allowed to move, which creates a formation.
+        if( true == WaveConfigurations[WaveCount].AlternateSpawners )
+        {
+            if( SpawnsPerWave < TotalSpawned && false == EnableEnemyMovement )
+            {
+                SpawnEnemies();
+                EnableEnemyMovement = true;
+                yield return new WaitForSeconds(0.1f);
+                EnableEnemyMovement = false;
+            }
+        }
+        else
+        {
+            if( SpawnsPerWave < TotalSpawned && false == EnableEnemyMovement )
+            {
+                foreach( EnemySpawnSettings obj in WaveConfigurations[WaveCount].SpawnSettings )
+                {
+                    SpawnEnemies();
+                }
+                EnableEnemyMovement = true;
+                yield return new WaitForSeconds(0.1f);
+                EnableEnemyMovement = false;
+            }
+        }
+        if( SpawnsPerWave >= TotalSpawned )
+        {
+            SpawnerSelected-= SpawnerSelected;
+            bWaveComplete = true;
+            if( ( false == ForceEndlessWave && SpawnsPerWave >= TotalSpawned ) )
+            {                        
+                if( WaveCount <= WaveConfigurations.Count )
+                {
+                    ++WaveCount;
+                }
+                if( WaveCount >= WaveConfigurations.Count )
+                {
+                    WaveCount = Mathf.RoundToInt(Random.Range(0, WaveConfigurations.Count));
+                    Debug.Log("WaveCount is: " +WaveCount);
+                }            
+                             
+            }
+            TotalSpawned -= TotalSpawned;
+            SpawnsPerWave -= SpawnsPerWave;
+            SpawnTimer -= SpawnTimer;
+            StopCoroutine(SpawnWave());
+        }
+    }
+    // Moved to it's own method from SpawnWave() to save resources, resulting in this being typed once instead of twice.
+    private void SpawnEnemies()
+    {      
+        if( WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].GetSpawnCounterValue() <  WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].AmountToSpawn )
+        {          
+            Spawned = WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].ObjEnemy;
+            SpawnPoint = WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].SpawnerLocator.gameObject.transform.position;
+            spawnee = ( GameObject )Instantiate(Spawned, SpawnPoint, Spawned.transform.rotation);
+            SpawnVariables();
+            ++EnemiesSpawnedCount;
+            spawnee.GetComponent<EnemyControl>().PathSelection = WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].EnemyPathChoice;
+            spawnee.name = WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].ObjEnemy.name + " " + EnemiesSpawnedCount;
+            spawnee.transform.parent = EnemyParent.transform;
+            
+            WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].IncrementSpawnCounter();
+            ++SpawnsPerWave;
+        }
+        if( SpawnerSelected+1 < WaveConfigurations[WaveCount].SpawnSettings.Count )
+        {
+            ++SpawnerSelected;
+        }
+        else
+        {
+            SpawnerSelected-= SpawnerSelected;
+        }
+    }
+    // Returns the reference for the player to whoever requests it. i.e. enemies being spawned.
+    public Player_Control GetPlayerRef()
+    {
+        return player;
+    }
+    // Tally up the amount of enemies which are to be spawned per wave setting TotalSpawned to the sum of the total of the amount to spawn for each spawner in a given wave.
+    private void GetTotalSpawnsFromWave()
+    {
+        if( 0 == TotalSpawned )
+        {            
+            foreach( EnemySpawnSettings obj in WaveConfigurations[WaveCount].SpawnSettings )
+            {
+                if( 0 != WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].AmountToSpawn )
+                {
+                    TotalSpawned += WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].AmountToSpawn;                    
+                }                    
+                WaveConfigurations[WaveCount].SpawnSettings[SpawnerSelected].ResetSpawnCounter();
+                ++SpawnerSelected;
+            }
+            // Resetting the SpawnCounters here because it saves resources, meaning we don't have to create another foreach loop and iterate through the spawners.
+            // Spawn counter should be zero at the start of a wave anyway.
+            SpawnerSelected -= SpawnerSelected;
+        }
     }
 }

@@ -14,6 +14,8 @@ public class UIAnimator : MonoBehaviour
     public bool StopGates = false;
     private UI_Main UIObj;
     private GameObject GameMaster;
+    public bool IgnorePooling = false;
+    private bool bPoolingComplete;
     
 // Start is called before the first frame update
 void Start()
@@ -28,7 +30,11 @@ void Start()
     {
         if (null != UIObj)
         {
-            if (UIObj.GamePause == false && GameMaster.GetComponent<Pooling>().PreCachingFinished() == true)
+            if (null != GameMaster && UIObj.GamePause == false)
+            {
+                bPoolingComplete = GameMaster.GetComponent<Pooling>().PreCachingFinished() == true;
+            }
+            if (UIObj.GamePause == false && ( true == bPoolingComplete || true == IgnorePooling ) )
             {
                 // if the UIGiantHanger is the object this script is assigned to then, proceed to move it's children in the X axis for 4.0 Seconds.
                 if (gameObject.name.Contains("UIGiantHanger"))
