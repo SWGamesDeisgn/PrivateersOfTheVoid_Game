@@ -19,18 +19,23 @@ public class UI_Main: MonoBehaviour {
     public GameObject GameInfo;
     private Resolution[] resolutions;
     public bool bHideResolutions;
-
     private void Awake()
     {
         resolutions = Screen.resolutions;
         SetResolutions();
-        ResolutionsObject = GameObject.Find("UIResolutionsDropdown");
-        CustomResolutions = GameObject.Find("UIResolutionsDropdown").GetComponent<Dropdown>();     
         UIPauseMenu = GameObject.Find("UIPauseMenu");
-        if (bHideResolutions)
+        if( UIPauseMenu )
         {
-            ResolutionsObject.SetActive(false);
-        }
+            ResolutionsObject = GameObject.Find("UIResolutionsDropdown");
+            if( ResolutionsObject )
+            {
+                CustomResolutions = GameObject.Find("UIResolutionsDropdown").GetComponent<Dropdown>();
+                if( bHideResolutions )
+                {
+                    ResolutionsObject.SetActive(false);
+                }
+            }
+        }    
     }
  
     // Use this for initialization
